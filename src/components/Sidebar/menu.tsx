@@ -37,6 +37,13 @@ export const menu = [
       { label: "Rubros", href: "/rubros" },
       { label: "Productos", href: "/productos" },
       { label: "Unidad Medida", href: "/unidad-medida" },
+      { label: "Tipo Expediente Compra", href: "/tipo-expediente-compra" },
+      { label: "Tipo Asignación", href: "/tipo-asignacion" },
+      { label: "Unidad Ejecutora", href: "/unidad-ejecutora" },
+      { label: "Tipo Contratación", href: "/tipo-contratacion" },
+      { label: "Solicitar Producto", href: "/solicitar-producto" },
+      { label: "Requisitos", href: "/requisitos" },
+      { label: "Coordinaciones", href: "/coordinaciones" },
     ],
   },
   {
