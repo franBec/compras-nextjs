@@ -1,17 +1,16 @@
 "use client";
 
 import { SubmitHandler, useForm } from "react-hook-form";
-import {
-  LoginApiArg,
-  useLoginMutation,
-} from "../../../../generated/rtk-query/comprasSpringAuthApi";
+import { LoginApiArg } from "../../../../generated/rtk-query/comprasSpringAuthApi";
+import { useLoginAndGetHeadersMutation } from "@/clients/comprasSpringAuthClient";
 
 const SigninForm = () => {
   const { register, handleSubmit } = useForm<LoginApiArg>();
-  const [loginMutation] = useLoginMutation();
+  const [loginMutation] = useLoginAndGetHeadersMutation();
   const onSubmit: SubmitHandler<LoginApiArg> = async (loginApiArg) => {
     const payload = await loginMutation(loginApiArg);
-    console.log("success!");
+    console.log(JSON.stringify(payload, null, 2));
+    return;
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
