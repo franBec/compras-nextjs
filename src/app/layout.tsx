@@ -4,6 +4,7 @@ import "flatpickr/dist/flatpickr.min.css";
 import "@/css/satoshi.css";
 import "@/css/style.css";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
+import StoreProvider from "./storeProvider";
 
 export default function RootLayout({
   children,
@@ -13,9 +14,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body suppressHydrationWarning={true}>
-        <div className="dark:bg-boxdark-2 dark:text-bodydark">
-          <DefaultLayout>{children}</DefaultLayout>
-        </div>
+        <StoreProvider>
+          <div className="dark:bg-boxdark-2 dark:text-bodydark">
+            <DefaultLayout>{children}</DefaultLayout>
+          </div>
+        </StoreProvider>
       </body>
     </html>
   );
