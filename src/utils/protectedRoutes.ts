@@ -1,6 +1,9 @@
 const protectedRoutes = [
     {
         "url": "/coordinaciones",
+    },
+    {
+        "url": "/coordinaciones",
         "permiso": "COMPRAS_PG_COO_MENU"
     },
     {
