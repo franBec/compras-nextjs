@@ -2,15 +2,17 @@
 
 import { SubmitHandler, useForm } from "react-hook-form";
 import { LoginApiArg } from "../../../../generated/rtk-query/comprasSpringAuthApi";
-import { useLoginAndGetHeadersMutation } from "@/clients/comprasSpringAuthClient";
+import { signIn } from "next-auth/react";
 
 const SigninForm = () => {
   const { register, handleSubmit } = useForm<LoginApiArg>();
-  const [loginMutation] = useLoginAndGetHeadersMutation();
   const onSubmit: SubmitHandler<LoginApiArg> = async (loginApiArg) => {
-    const payload = await loginMutation(loginApiArg);
-    console.log(JSON.stringify(payload, null, 2));
-    return;
+    const result = await signIn("credentials", {
+      username: loginApiArg.loginRequest.username,
+      password: loginApiArg.loginRequest.password,
+      redirect: true,
+      callbackUrl: "/",
+    });
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

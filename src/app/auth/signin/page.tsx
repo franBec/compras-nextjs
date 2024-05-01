@@ -24,7 +24,12 @@ const SignIn: React.FC = () => {
               />
             </Link>
 
-            <p className="2xl:px-20">Made by Pollito {"<🐤/>"}</p>
+            <p className="2xl:px-20">
+              Hecho por{" "}
+              <a href="https://pollito.dev" target="_blank">
+                Pollito {"<🐤/>"}
+              </a>
+            </p>
           </div>
         </div>
 
