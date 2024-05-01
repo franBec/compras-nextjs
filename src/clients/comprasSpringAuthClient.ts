@@ -15,7 +15,7 @@ const injectedRtkApis = comprasSpringAuthClient.injectEndpoints({
                 method: "POST",
                 body: queryArg.loginRequest,
                 responseHandler: async (response) => {
-                    const headers: Record<string, string> = {};
+                    const headers: HeadersApiResponse = {};
                     response.headers.forEach((value, key) => {
                         headers[key] = value;
                     });

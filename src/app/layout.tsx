@@ -5,6 +5,7 @@ import "@/css/satoshi.css";
 import "@/css/style.css";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import StoreProvider from "./storeProvider";
+import Provider from "./Provider";
 
 export default function RootLayout({
   children,
@@ -14,11 +15,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body suppressHydrationWarning={true}>
-        <StoreProvider>
-          <div className="dark:bg-boxdark-2 dark:text-bodydark">
-            <DefaultLayout>{children}</DefaultLayout>
-          </div>
-        </StoreProvider>
+        <Provider>
+          <StoreProvider>
+            <div className="dark:bg-boxdark-2 dark:text-bodydark">
+              <DefaultLayout>{children}</DefaultLayout>
+            </div>
+          </StoreProvider>
+        </Provider>
       </body>
     </html>
   );
