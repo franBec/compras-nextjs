@@ -11,6 +11,10 @@ export default NextAuth({
                 password: { label: "Contraseña", type: "password" }
             },
             async authorize(credentials, req) {
+                const secretKey = process.env.JWT_SECRET;
+                if (!secretKey) {
+                    throw new Error("undefined process.env.JWT_SECRET")
+                }
                 const res = await fetch("http://localhost:8081/login", {
                     method: "POST",
                     headers: {
@@ -23,22 +27,28 @@ export default NextAuth({
                 });
 
                 const token = res.headers.get('Authorization');
-                if (token) {
-                    const secretKey = 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'; // Replace this with your actual Base64-encoded secret key
-                    const decodedSecret = Buffer.from(secretKey, 'base64');
+                if (!token) {
+                    return null;
+                }
 
-                    try {
-                        const decoded = jwt.verify(token.replace('Bearer ', ''), decodedSecret);
-                        console.log(decoded)
-                        return decoded as any;
-                    } catch (error) {
-                        console.error('JWT verification failed:', error);
-                        return null;
-                    }
-                } else {
+                const decodedSecret = Buffer.from(secretKey, 'base64');
+                try {
+                    const user = jwt.verify(token.replace('Bearer ', ''), decodedSecret) as jwt.JwtPayload;
+                    user.accessToken = token
+                    return user as any;
+                } catch (error) {
                     return null;
                 }
             }
         })
-    ]
+    ],
+    callbacks: {
+        async jwt({ token, user }) {
+            return { ...token, ...user };
+        },
+        async session({ session, token, user }) {
+            session.user = token as any;
+            return session;
+        }
+    }
 })
