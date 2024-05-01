@@ -1,0 +1,109 @@
+openapi: "3.0.2"
+info:
+  description: Interfaz API para realizar operaciones de Autenticación y Autorización en compras (rantiy).
+  title: Compras Spring Auth
+  version: "1.0"
+servers:
+  - url: http://localhost:8080
+paths:
+  /login:
+    post:
+      tags:
+        - Login
+      description: Permite la autenticación en la aplicación.
+      operationId: login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      summary: Iniciar sesión en compras.
+      responses:
+        '200':
+          description: Inicio de sesión exitoso.
+          headers:
+            Authorization:
+              description: Token de autenticación.
+              schema:
+                format: jwt
+                type: string
+                example: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlc3RhZG8iOnRydWUsImRpc3BsYXlOYW1lIjoiTWFydGluIFZpbGxlZ2FzIiwiZXh0ZXJuYWxHdWlkIjoiQjdFRTUyMUItOTRFNC00QzVCLThBOEQtODE4Q0E2QkQ4REYwIiwiaWQiOjcyNCwidXNlck5hbWUiOiJtdmlsbGVnYXMiLCJkbmkiOiIyNzE2NzE4NSIsImZlY2hhQ2FtYmlvQ2xhdmUiOiIyMDE5LTEyLTEzIDE2OjQzOjQxLjAwMCIsInN1YiI6IjcyNCIsImlhdCI6MTcxNDQ5NTY0NCwiZXhwIjoxNzE0NDk5MjQ0fQ.Td9l7dgJ5U-zNiaTQEqIYTuMPAADKIKYJdoKYIrI6_c
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error inesperado.
+  /permiso:
+    get:
+      tags:
+        - Jwt
+      description: Recupera todos los permisos asociados al JWT.
+      operationId: getPermisosByJwt
+      summary: Recupera todos los permisos asociados al JWT.
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          schema:
+            type: string
+            example: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlc3RhZG8iOnRydWUsImRpc3BsYXlOYW1lIjoiTWFydGluIFZpbGxlZ2FzIiwiZXh0ZXJuYWxHdWlkIjoiQjdFRTUyMUItOTRFNC00QzVCLThBOEQtODE4Q0E2QkQ4REYwIiwiaWQiOjcyNCwidXNlck5hbWUiOiJtdmlsbGVnYXMiLCJkbmkiOiIyNzE2NzE4NSIsImZlY2hhQ2FtYmlvQ2xhdmUiOiIyMDE5LTEyLTEzIDE2OjQzOjQxLjAwMCIsInN1YiI6Im12aWxsZWdhcyIsImlhdCI6MTcxNDQ3ODYwMSwiZXhwIjoxNzE0NDgyMjAxfQ.3KfMDt6eR2_XiuNt_U_eXyED7VYeuAjy7BOH9Jy4qvQ
+      responses:
+        '200':
+          description: Lista de permisos asociados al JWT.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                  example: NIVEL_3_MENU_LATERAL
+          headers:
+            Authorization:
+              description: JWT validado.
+              schema:
+                type: string
+                example: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlc3RhZG8iOnRydWUsImRpc3BsYXlOYW1lIjoiTWFydGluIFZpbGxlZ2FzIiwiZXh0ZXJuYWxHdWlkIjoiQjdFRTUyMUItOTRFNC00QzVCLThBOEQtODE4Q0E2QkQ4REYwIiwiaWQiOjcyNCwidXNlck5hbWUiOiJtdmlsbGVnYXMiLCJkbmkiOiIyNzE2NzE4NSIsImZlY2hhQ2FtYmlvQ2xhdmUiOiIyMDE5LTEyLTEzIDE2OjQzOjQxLjAwMCIsInN1YiI6Im12aWxsZWdhcyIsImlhdCI6MTcxNDQ3ODYwMSwiZXhwIjoxNzE0NDgyMjAxfQ.3KfMDt6eR2_XiuNt_U_eXyED7VYeuAjy7BOH9Jy4qvQ
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Error inesperado.
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          description: Un breve mensaje de error o identificador.
+          type: string
+        message:
+          description: Un mensaje de error detallado.
+          type: string
+        path:
+          description: La ruta que resultó en el error.
+          type: string
+        timestamp:
+          description: La fecha y hora en que ocurrió el error, en formato ISO 8601.
+          example: 2024-01-04T15:30:00Z
+          type: string
+        trace:
+          description: opentelemetry TraceID, un identificador único.
+          example: 0c6a41e22fe6478cc391908406ca9b8d
+          type: string
+    LoginRequest:
+      type: object
+      required:
+        - password
+        - username
+      properties:
+        password:
+          description: contraseña
+          example: XXX
+          type: string
+        username:
+          description: Nombre de usuario.
+          example: mvillegas
+          type: string
