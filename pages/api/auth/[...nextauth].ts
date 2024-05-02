@@ -1,44 +1,49 @@
 import NextAuth from "next-auth/next"
 import CredentialsProvider from "next-auth/providers/credentials"
 import jwt from 'jsonwebtoken';
+import { login, getPermisos } from "@/utils/nextAuthFetch";
 
 export default NextAuth({
     providers: [
         CredentialsProvider({
             name: "Credentials",
             credentials: {
-                username: { label: "Nombre de usuario", type: "text" },
-                password: { label: "Contraseña", type: "password" }
+                username: { type: "text" },
+                password: { type: "password" }
             },
             async authorize(credentials, req) {
+                if (!credentials) {
+                    throw new Error("undefined credentials")
+                }
+
                 const secretKey = process.env.JWT_SECRET;
                 if (!secretKey) {
                     throw new Error("undefined process.env.JWT_SECRET")
                 }
-                const res = await fetch("http://localhost:8081/login", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        username: credentials?.username,
-                        password: credentials?.password
-                    })
-                });
 
-                const token = res.headers.get('Authorization');
+                const token = await login(credentials?.username, credentials?.password);
                 if (!token) {
                     return null;
                 }
 
-                const decodedSecret = Buffer.from(secretKey, 'base64');
+                let user;
+
                 try {
-                    const user = jwt.verify(token.replace('Bearer ', ''), decodedSecret) as jwt.JwtPayload;
+                    user = jwt.verify(token.replace('Bearer ', ''), Buffer.from(secretKey, 'base64')) as jwt.JwtPayload;
                     user.accessToken = token
-                    return user as any;
                 } catch (error) {
                     return null;
                 }
+
+                const permisos = await getPermisos(token);
+                if (permisos) {
+                    user.permisos = permisos;
+                }
+                else {
+                    user.permisos = []
+                }
+
+                return user as any;
             }
         })
     ],
