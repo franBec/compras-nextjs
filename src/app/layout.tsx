@@ -4,8 +4,8 @@ import "flatpickr/dist/flatpickr.min.css";
 import "@/css/satoshi.css";
 import "@/css/style.css";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import StoreProvider from "./storeProvider";
-import Provider from "./Provider";
+import ReactReduxStoreProvider from "../providers/reactReduxStoreProvider";
+import NextAuthSessionProvider from "../providers/nextAuthSessionProvider";
 
 export default function RootLayout({
   children,
@@ -15,13 +15,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body suppressHydrationWarning={true}>
-        <Provider>
-          <StoreProvider>
+        <NextAuthSessionProvider>
+          <ReactReduxStoreProvider>
             <div className="dark:bg-boxdark-2 dark:text-bodydark">
               <DefaultLayout>{children}</DefaultLayout>
             </div>
-          </StoreProvider>
-        </Provider>
+          </ReactReduxStoreProvider>
+        </NextAuthSessionProvider>
       </body>
     </html>
   );

@@ -4,7 +4,7 @@ import { useRef } from "react";
 import { Provider } from "react-redux";
 import { makeStore, AppStore } from "../utils/store";
 
-export default function StoreProvider({
+export default function ReactReduxStoreProvider({
   children,
 }: {
   children: React.ReactNode;

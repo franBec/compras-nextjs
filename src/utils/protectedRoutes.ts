@@ -1,6 +1,6 @@
 const protectedRoutes = [
     {
-        "url": "/coordinaciones",
+        "url": "/",
     },
     {
         "url": "/coordinaciones",
