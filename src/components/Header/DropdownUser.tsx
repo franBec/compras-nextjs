@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
+import Image from "next/image";
 
 const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -49,6 +50,18 @@ const DropdownUser = () => {
             {session?.user.displayName}
           </span>
           <span className="block text-xs">{session?.user.userName}</span>
+        </span>
+        <span className="h-12 w-12 rounded-full">
+          <Image
+            width={112}
+            height={112}
+            src={"/images/user/pollito.jpg"}
+            style={{
+              width: "auto",
+              height: "auto",
+            }}
+            alt="User"
+          />
         </span>
 
         <svg

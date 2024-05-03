@@ -7,7 +7,7 @@ const Home = () => {
 
   return (
     <p className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
-      Hola {session?.user.displayName} 👋
+      Hola {!session?.user ? "..." : session?.user.displayName} 👋
     </p>
   );
 };
