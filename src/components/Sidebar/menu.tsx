@@ -34,21 +34,21 @@ export const menu = [
       </svg>
     ),
     subLinks: [
-      { label: "Rubros", href: "/rubros" },
-      { label: "Productos", href: "/productos" },
+      { label: "Rubro", href: "/rubro" },
+      { label: "Producto", href: "/producto" },
       { label: "Unidad Medida", href: "/unidad-medida" },
       { label: "Tipo Expediente Compra", href: "/tipo-expediente-compra" },
       { label: "Tipo Asignación", href: "/tipo-asignacion" },
       { label: "Unidad Ejecutora", href: "/unidad-ejecutora" },
       { label: "Tipo Contratación", href: "/tipo-contratacion" },
       { label: "Solicitar Producto", href: "/solicitar-producto" },
-      { label: "Requisitos", href: "/requisitos" },
-      { label: "Coordinaciones", href: "/coordinaciones" },
+      { label: "Requisito", href: "/requisito" },
+      { label: "Coordinación", href: "/coordinacion" },
     ],
   },
   {
-    label: "Proveedores",
-    href: "/proveedores",
+    label: "Proveedor",
+    href: "/proveedor",
     svg: (
       <svg
         className="fill-current"
@@ -104,8 +104,8 @@ export const menu = [
       </svg>
     ),
     subLinks: [
-      { label: "Expedientes", href: "/expedientes" },
-      { label: "Expedientes UE", href: "/expedientes-ue" },
+      { label: "Expediente", href: "/expediente" },
+      { label: "Expediente UE", href: "/expediente-ue" },
     ],
   },
 ];

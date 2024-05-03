@@ -1,20 +1,8 @@
 import NextAuth from "next-auth";
+import { NextAuthSessionUser } from "./NextAuthSessionUser";
 
 declare module "next-auth" {
     interface Session {
-        user: {
-            estado: boolean,
-            displayName: string,
-            externalGuid: string,
-            id: number,
-            userName: string,
-            dni: string,
-            fechaCambioClave: string,
-            sub: string,
-            iat: number,
-            exp: number,
-            accessToken: string;
-            permisos: string[]
-        };
+        user: NextAuthSessionUser;
     }
 }
