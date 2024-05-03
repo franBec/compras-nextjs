@@ -1,5 +1,3 @@
-import React from "react";
-import Link from "next/link";
 import Image from "next/image";
 import { Metadata } from "next";
 import SigninForm from "@/components-compras/auth/signin/signinForm";
@@ -15,14 +13,13 @@ const SignIn: React.FC = () => {
       <div className="flex flex-wrap items-center">
         <div className="hidden w-full xl:block xl:w-1/2">
           <div className="px-26 py-17.5 text-center">
-            <Link className="mb-5.5 inline-block" href="/">
-              <Image
-                src={"/images/logo.png"}
-                alt="Logo"
-                width={374}
-                height={208}
-              />
-            </Link>
+            <Image
+              src={"/images/logo.png"}
+              className="mb-5.5 inline-block"
+              alt="Logo"
+              width={519}
+              height={289}
+            />
 
             <p className="2xl:px-20">
               Hecho por{" "}
