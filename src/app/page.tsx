@@ -1,4 +1,4 @@
-import DummyAuth from "@/components-compras/dummyAuth";
+import Home from "@/components-compras/home/home";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -6,6 +6,6 @@ export const metadata: Metadata = {
   description: "Compras y Contrataciones - SAN LUIS LA CIUDAD",
 };
 
-export default function Home() {
-  return <DummyAuth />;
+export default function HomePage() {
+  return <Home />;
 }
