@@ -13,12 +13,12 @@ export default NextAuth({
             },
             async authorize(credentials, req) {
                 if (!credentials) {
-                    throw new Error("undefined credentials");
+                    throw new Error("!credentials");
                 }
 
                 const secretKey = process.env.JWT_SECRET;
                 if (!secretKey) {
-                    throw new Error("undefined process.env.JWT_SECRET");
+                    throw new Error("!secretKey");
                 }
 
                 const response = await fetch(`${process.env.NEXT_PUBLIC_COMPRAS_SPRING_AUTH_BASE_URL}/login`, {
@@ -35,14 +35,13 @@ export default NextAuth({
                 if (!response.ok) {
                     const error = await response.json() as LoginError;
                     throw new Error(error.message)
-                    //return { error: 'my custom error' };
                 }
 
                 const permisos = await response.json() as LoginApiResponse;
                 const token = response.headers.get('Authorization');
 
                 if (!token) {
-                    return null;
+                    throw new Error("!token");
                 }
 
                 let user;
