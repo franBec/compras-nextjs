@@ -17,11 +17,18 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/LoginRequest'
+              $ref: "#/components/schemas/LoginRequest"
       summary: Iniciar sesión en compras.
       responses:
-        '200':
-          description: Inicio de sesión exitoso.
+        "200":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                  example: NIVEL_3_MENU_LATERAL
+          description: Inicio de sesión exitoso. Se responde body con array de Permisos y header authorization bearer con informacion del Usuario.
           headers:
             Authorization:
               description: Token de autenticación.
@@ -33,7 +40,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
           description: Error inesperado.
   /permiso:
     get:
@@ -50,7 +57,7 @@ paths:
             type: string
             example: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlc3RhZG8iOnRydWUsImRpc3BsYXlOYW1lIjoiTWFydGluIFZpbGxlZ2FzIiwiZXh0ZXJuYWxHdWlkIjoiQjdFRTUyMUItOTRFNC00QzVCLThBOEQtODE4Q0E2QkQ4REYwIiwiaWQiOjcyNCwidXNlck5hbWUiOiJtdmlsbGVnYXMiLCJkbmkiOiIyNzE2NzE4NSIsImZlY2hhQ2FtYmlvQ2xhdmUiOiIyMDE5LTEyLTEzIDE2OjQzOjQxLjAwMCIsInN1YiI6Im12aWxsZWdhcyIsImlhdCI6MTcxNDQ3ODYwMSwiZXhwIjoxNzE0NDgyMjAxfQ.3KfMDt6eR2_XiuNt_U_eXyED7VYeuAjy7BOH9Jy4qvQ
       responses:
-        '200':
+        "200":
           description: Lista de permisos asociados al JWT.
           content:
             application/json:
@@ -69,7 +76,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
           description: Error inesperado.
 components:
   schemas:

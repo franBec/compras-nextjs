@@ -1,7 +1,7 @@
 import NextAuth from "next-auth/next"
 import CredentialsProvider from "next-auth/providers/credentials"
 import jwt from 'jsonwebtoken';
-import { login, getPermisos } from "@/utils/nextAuthFetch";
+import { LoginApiResponse, Error as LoginError } from "../../../generated/rtk-query/comprasSpringAuthApi";
 
 export default NextAuth({
     providers: [
@@ -13,35 +13,42 @@ export default NextAuth({
             },
             async authorize(credentials, req) {
                 if (!credentials) {
-                    throw new Error("undefined credentials")
+                    throw new Error("undefined credentials");
                 }
 
                 const secretKey = process.env.JWT_SECRET;
                 if (!secretKey) {
-                    throw new Error("undefined process.env.JWT_SECRET")
+                    throw new Error("undefined process.env.JWT_SECRET");
                 }
 
-                const token = await login(credentials?.username, credentials?.password);
+                const response = await fetch(`${process.env.NEXT_PUBLIC_COMPRAS_SPRING_AUTH_BASE_URL}/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        "username": credentials.username,
+                        "password": credentials.password
+                    }),
+                });
+
+                if (!response.ok) {
+                    const error = await response.json() as LoginError;
+                    throw new Error(error.message)
+                    //return { error: 'my custom error' };
+                }
+
+                const permisos = await response.json() as LoginApiResponse;
+                const token = response.headers.get('Authorization');
+
                 if (!token) {
                     return null;
                 }
 
                 let user;
-
-                try {
-                    user = jwt.verify(token.replace('Bearer ', ''), Buffer.from(secretKey, 'base64')) as jwt.JwtPayload;
-                    user.accessToken = token
-                } catch (error) {
-                    return null;
-                }
-
-                const permisos = await getPermisos(token);
-                if (permisos) {
-                    user.permisos = permisos;
-                }
-                else {
-                    user.permisos = []
-                }
+                user = jwt.verify(token.replace('Bearer ', ''), Buffer.from(secretKey, 'base64')) as jwt.JwtPayload;
+                user.accessToken = token
+                user.permisos = permisos;
 
                 return user as any;
             }
@@ -54,7 +61,8 @@ export default NextAuth({
         async session({ session, token, user }) {
             session.user = token as any;
             return session;
-        }
+        },
+
     },
     pages: {
         signIn: "/auth/signin"

@@ -3,16 +3,24 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 import { LoginApiArg } from "../../../../generated/rtk-query/comprasSpringAuthApi";
 import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const SigninForm = () => {
+  const router = useRouter();
+
   const { register, handleSubmit } = useForm<LoginApiArg>();
   const onSubmit: SubmitHandler<LoginApiArg> = async (loginApiArg) => {
-    const result = await signIn("credentials", {
+    const res = await signIn("credentials", {
       username: loginApiArg.loginRequest.username,
       password: loginApiArg.loginRequest.password,
-      redirect: true,
-      callbackUrl: "/",
+      redirect: false,
     });
+    if (res?.status == 200) {
+      router.push("/");
+    } else {
+      const loginError = res?.error;
+      alert(loginError);
+    }
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
