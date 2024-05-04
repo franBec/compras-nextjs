@@ -8,7 +8,7 @@ import { useState } from "react";
 import Alert from "@/components-compras/alert";
 import { AlertEnum } from "@/types/AlertEnum";
 import { useSession } from "next-auth/react";
-import Loader from "@/components/common/Loader";
+import Loader from "@/components/common/Loader/loader";
 
 const Form = () => {
   const router = useRouter();
@@ -18,8 +18,9 @@ const Form = () => {
   }
 
   const [loginError, setloginError] = useState<string | null>(null);
-  const { register, handleSubmit } = useForm<LoginApiArg>();
+  const { register, handleSubmit, formState } = useForm<LoginApiArg>();
   const onSubmit: SubmitHandler<LoginApiArg> = async (loginApiArg) => {
+    setloginError(null);
     const res = await signIn("credentials", {
       username: loginApiArg.loginRequest.username,
       password: loginApiArg.loginRequest.password,
@@ -35,9 +36,9 @@ const Form = () => {
   return (
     <div className="w-full border-stroke dark:border-strokedark xl:w-1/2 xl:border-l-2">
       {status === "loading" ? (
-        <>
-          <Loader />
-        </>
+        <div className="flex items-center justify-center bg-white dark:bg-black">
+          <Loader h={16} w={16} />
+        </div>
       ) : (
         <>
           <div className="w-full p-4 sm:p-12.5 xl:p-17.5">
@@ -63,6 +64,7 @@ const Form = () => {
                   <input
                     {...register("loginRequest.username")}
                     type="text"
+                    disabled={formState.isSubmitting}
                     className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
 
@@ -97,6 +99,7 @@ const Form = () => {
                 <div className="relative">
                   <input
                     {...register("loginRequest.password")}
+                    disabled={formState.isSubmitting}
                     type="password"
                     className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
@@ -125,11 +128,17 @@ const Form = () => {
               </div>
 
               <div className="mb-5">
-                <input
-                  type="submit"
-                  value="Iniciar sesión"
-                  className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90"
-                />
+                {formState.isSubmitting ? (
+                  <div className="flex items-center justify-center">
+                    <Loader h={14} w={14}></Loader>
+                  </div>
+                ) : (
+                  <input
+                    type="submit"
+                    value="Iniciar sesión"
+                    className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90"
+                  />
+                )}
               </div>
             </form>
           </div>
